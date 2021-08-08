@@ -94,7 +94,7 @@ window.onload = () => {
             song = document.createElement('div');
             song.className = 'song';
             song.id = index;
-            song.innerHTML = `${index + 1}.   ${songName}`;
+            song.innerHTML = `  ${index + 1}.   ${songName}`;
             
             song.addEventListener('click',(event) =>{
                 songNumber = event.target.id;
