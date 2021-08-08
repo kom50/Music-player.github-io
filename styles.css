@@ -139,16 +139,17 @@ input:hover {
 }
 
 .song-list-page{
+
     display: none;
     justify-content: center;
     align-items: space-around;
-
+    
+    width: 100%;
     overflow:  scroll;
 }
 
 .song-list-page .header{
     width: 92%;
-    /* border-bottom : 2px solid white; */
     position: absolute;
     top : 15px;
 }
@@ -162,10 +163,11 @@ input:hover {
     overflow:  scroll;
 }
 .songs-list .song{
-    border-bottom : 1px solid white !important;
+    border-bottom : 1px solid white;
     padding : 10px;
     margin-top : 4px;
+    text-align: left;
+
     overflow : scroll;
-    text-align: left;;
 }
 
