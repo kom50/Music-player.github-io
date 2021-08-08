@@ -1,5 +1,22 @@
+const load = () => {
+    console.log('Load')
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let doc = document.querySelector('.container');
+    Object.assign(doc.style, {
+        'width': (width - 12) + 'px',
+        'height': (height) + 'px',
+        'marginLeft': '6px',
+        'justify-content': 'center',
+    })
+    console.log(width, height)
+}
+window.addEventListener('resize', load);
+
 
 window.onload = () => {
+    //
+    load();
 
     audio = document.querySelector('audio')
     files = document.getElementById('audio')
