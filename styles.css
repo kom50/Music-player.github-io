@@ -168,6 +168,7 @@ input:hover {
     margin-top : 4px;
     text-align: left;
 
+    width :  100%;
     overflow : scroll;
 }
 

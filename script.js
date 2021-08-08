@@ -23,8 +23,8 @@ window.onload = () => {
     play = document.querySelector('.play');
     songName = document.querySelector('#song-name');
 
-    shuffle =document.querySelector('.shuffle')
-    repeat =document.querySelector('.repeat')
+    shuffle = document.querySelector('.shuffle')
+    repeat = document.querySelector('.repeat')
     // 
     firstPage = document.querySelector('.inner-container:first-child');
     songListPage = document.querySelector('.song-list-page');
@@ -35,7 +35,7 @@ window.onload = () => {
 
     let audioFiles = [],
         songNumber = 0,
-        totalSongs, songsName = [];
+        totalSongs = 0, songsName = [];
 
     files.oninput = function (event) {
         let files = event.target.files;
@@ -89,43 +89,49 @@ window.onload = () => {
         songName.textContent = songsName[songNumber]
     })
 
-    function songsList(){
-        songsName.forEach((songName, index) =>{
+    function songsList() {
+        songsName.forEach((songName, index) => {
             song = document.createElement('div');
             song.className = 'song';
             song.id = index;
             song.innerHTML = `  ${index + 1}.   ${songName}`;
-            
-            song.addEventListener('click',(event) =>{
+
+            song.addEventListener('click', (event) => {
                 songNumber = event.target.id;
                 audio.src = audioFiles[songNumber];
                 songName.textContent = songsName[songNumber]
                 event.stopPropagation();
             })
             songList.appendChild(song);
-
         })
     }
+
     // When double clicked on songListPage then show first page
     let count = 0;
-    songListPage.addEventListener('click', (event)=>{
-
-         count += 1;
-         setTimeout(()=>{
+    songListPage.addEventListener('click', (event) => {
+        count += 1;
+        setTimeout(() => {
             count = 0;
-         }, 2000)
-         if(count == 2){
-             firstPage.style.display = 'flex'
-             songListPage.style.display = 'none'
-         }
+        }, 2000)
+        if (count == 2) {
+            //  songList.
+            firstPage.style.display = 'flex'
+            songListPage.style.display = 'none'
+        }
     }, false)
 
+    let onces = true;
     roundCircle.onclick = (event) => {
-        songsList()
-        firstPage.style.display = 'none'
-        songListPage.style.display = 'flex'
+        if (totalSongs != 0) {
+            if (onces) {
+                songsList()
+                ones = false;
+            }
+            firstPage.style.display = 'none'
+            songListPage.style.display = 'flex'
+        }
     }
-}  // window.onload() method
+} // window.onload() method
 
 
 
