@@ -34,15 +34,20 @@ window.onload = () => {
     let progress = document.querySelector('.progress')
     let duration_label = document.querySelector('.duration')
     let currentTime_label = document.querySelector('.currentTime')
-    
+
     // 
     let firstPage = document.querySelector('.inner-container:nth-child(2)');
     let songListPage = document.querySelector('.song-list-page');
     let songList = document.querySelector('.songs-list');
 
     let audioFiles = [],
-        currentSongNo = 0,
+        currentSongNo = 1,
         totalSongs, songsName = [];
+
+    function addAudioSrc(curSongNo) {
+        audio.src = audioFiles[curSongNo];
+        songName.textContent = songsName[curSongNo]
+    }
 
     inputFile.oninput = function (event) {
         let files = event.target.files;
@@ -60,7 +65,7 @@ window.onload = () => {
         isPlay ? set_fun('images/play.png', 'pause', 'rgb(245, 200, 235)') : set_fun('images/pause.png', 'play', '#fff')
         isPlay = !isPlay;
 
-        function set_fun(src, method, bgColor){
+        function set_fun(src, method, bgColor) {
             play.src = src;
             play.style.backgroundColor = bgColor;
             audio[method]() // call method
@@ -82,11 +87,6 @@ window.onload = () => {
         }
     }
 
-    function addAudioSrc(currentSongNo) {
-        audio.src = audioFiles[currentSongNo];
-        songName.textContent = songsName[currentSongNo]
-    }
-
     next.onclick = function (event) {
         if (isRepeat) {
             repeat_fun();
@@ -99,25 +99,20 @@ window.onload = () => {
                 currentSongNo++;
             }
             addAudioSrc(currentSongNo);
-        }
-    }
 
-    audio.onpause = function (event) {
-        if (isBackwardBtnPressed) {
-            event.target.currentTime -= 5;
-            isBackwardBtnPressed = false;
-            audio.play();
-        }
-        if (isForwardBtnPressed) {
-            isForwardBtnPressed = false;
-            event.target.currentTime += 5;
-            audio.play();
+            /* console.log(--currentSongNo % totalSongs);
+            if (currentSongNo == 0)
+                currentSongNo = totalSongs;
+                 console.log(currentSongNo++ % totalSongs);
+                if (currentSongNo == totalSongs)
+                currentSongNo = 0; 
+            */
         }
     }
 
     let isBackwardBtnPressed = false;
     backward.addEventListener('click', (event) => {
-        isBackwardBtnPressed = true;  
+        isBackwardBtnPressed = true;
         audio.pause();
     })
     let isForwardBtnPressed = false;
@@ -158,7 +153,7 @@ window.onload = () => {
             song = document.createElement('div');
             song.className = 'song';
             song.id = index;
-            song.innerHTML = `${index + 1}.   ${songName}`;
+            song.innerHTML = (index + 1) + '. ' + songName;; /* `${index + 1}.   ${songName}`; */
 
             song.addEventListener('click', (event) => {
                 currentSongNo = event.target.id;
@@ -185,6 +180,19 @@ window.onload = () => {
         songsList()
         firstPage.style.display = 'none'
         songListPage.style.display = 'flex'
+    }
+
+    audio.onpause = function (event) {
+        if (isBackwardBtnPressed) {
+            event.target.currentTime -= 5;
+            isBackwardBtnPressed = false;
+            audio.play();
+        }
+        if (isForwardBtnPressed) {
+            isForwardBtnPressed = false;
+            event.target.currentTime += 5;
+            audio.play();
+        }
     }
 
     //when music end then next music is auto play
