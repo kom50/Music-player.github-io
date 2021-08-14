@@ -4,41 +4,60 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=yes">
     <link rel="stylesheet" href="styles.css">
     <script src="script.js"></script>
     <title>Music Player</title>
 </head>
+<!-- Add Some features  -->
 
 <body>
+    <div id="menu">
+        <div class='icon'> <img src="images/open.png" alt="open" ></div>
+        <div class='left-panel'>
+            <div class='timer'> Timer </div>   
+        </div>
+    </div>
     <div class='container'>
+        <div id='back-img'></div>
         <div class="inner-container">
             <div class='items header'>
                 <h2>Music Player</h2>
             </div>
+            <div class='items circle'>
+                <div class='round-circle'>
+                    <img id='play-list' src='images/playlist.png' >
+                </div>
+            </div>
             <div class='items song-label'>
-                <marquee>
-                    <p id='song-name'> </p>
+                <marquee id='song-name' scrollAmount = 4   direction='left'>
                 </marquee>
             </div>
-            <div class='items circle'>
-                <div class='round-circle'></div>
-            </div>
             <div class='items audio-container'>
-                <audio src="" controls autoplay></audio>
+                <audio src="" autoplay></audio>
+                <div class='progress-bar'>
+                    <div class='progress'></div>
+                </div>
+                <div class='progress-timer'>
+                    <span class='currentTime'>0:0 </span>
+                    <span class='duration'>0:0</span>
+                </div>
             </div>
-            <div class='items'>
-                <input id='audio' type="file" accept="audio/*" multiple>
+            <div class='items file-container'>
+                <div class='file-item file-box'> Select Songs </div>
+                <input class='file-item' id='audio' type="file" accept="audio/*" multiple>
             </div>
             <div class='items controls'>
                 <div class='controls-btn'>
-                    <img class='btn shuffle' src='photos/shuffle.png' alt='previous'>
-                    <img class='btn repeat' src='photos/repeat.png' alt='Play'>
+                    <img class='btn shuffle' src='images/shuffle.png' alt='previous'>
+                    <img class='btn repeat' src='images/repeat.png' alt='Play'>
                 </div>
                 <div class='controls-btn'>
-                    <img class='btn previous' src='photos/previous1.png' alt='previous'>
-                    <img class='btn play pause' src='photos/pause1.png' alt='Play'>
-                    <img class='btn next' src='photos/next1.png' alt='Next'>
+                    <img class='btn previous' src='images/previous.png' alt='previous'>
+                    <img class='btn backward' src='images/backward.png' alt='Next'>
+                    <img class='btn play pause' src='images/pause.png' alt='Play'>
+                    <img class='btn forward' src='images/fast_forward.png' alt='previous'>
+                    <img class='btn next' src='images/next.png' alt='Next'>
                 </div>
             </div>
         </div>
@@ -47,9 +66,11 @@
                 <h2>Music Player</h2>
             </div>
             <div class='songs-list'>
+
             </div>
         </div>
     </div>
+
 </body>
 
 </html>
