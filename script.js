@@ -11,223 +11,158 @@ const load = () => {
 }
 window.addEventListener('resize', load);
 
+// Add Timer  next update
 
-
-// Add Timer 
 window.onload = () => {
     //
     load();
-
     let audio = document.querySelector('audio')
-    let files = document.getElementById('audio')
+    let inputFile = document.getElementById('audio')
 
     let next = document.querySelector('.next');
     let previous = document.querySelector('.previous');
     let play = document.querySelector('.play');
     let backward = document.querySelector('.backward');
     let forward = document.querySelector('.forward');
+    let shuffle = document.querySelector('.shuffle')
+    let repeat = document.querySelector('.repeat')
 
     let songName = document.querySelector('#song-name');
-
-    let shuffle =document.querySelector('.shuffle')
-    let repeat =document.querySelector('.repeat')
-
-    let playListBtn =document.querySelector('#play-list')
-    console.log(playListBtn)
+    let playListBtn = document.querySelector('#play-list')
 
     // progress
     let progress = document.querySelector('.progress')
     let duration_label = document.querySelector('.duration')
     let currentTime_label = document.querySelector('.currentTime')
-    console.log(progress);
+    
     // 
     let firstPage = document.querySelector('.inner-container:nth-child(2)');
     let songListPage = document.querySelector('.song-list-page');
     let songList = document.querySelector('.songs-list');
 
-    //  animation
-    let roundCircle = document.querySelector('.round-circle');
-   
-
     let audioFiles = [],
         currentSongNo = 0,
         totalSongs, songsName = [];
 
-    files.oninput = function (event) {
+    inputFile.oninput = function (event) {
         let files = event.target.files;
         totalSongs = files.length;
-        console.log('files')
-        console.log(files)
-        console.log(event.target.files)
 
         for (i = 0; i < totalSongs; i++) {
             audioFiles[i] = URL.createObjectURL(files[i])
             songsName[i] = files[i].name;
         }
-
-        addMusicSrc(0);
-
-        // audio.src = audioFiles[0];
-        // songName.textContent = songsName[0]
-
-
-        // console.log(audioFiles)
-        // console.log(songsName)
-        // console.log("audio")
-        // console.log(audio)
-        // console.log(audio.duration)
+        addAudioSrc(0);
     }
-
-    /* audio.onplaying = function (event) {
-        console.log('playing start')
-        console.log('duration ', event)
-        console.log('duration ', event.target.duration)
-        console.log('currentTime ', event.target.currentTime)
-
-        // audio.currentTime += 1;
-        duration =  convertElapsedTime(event.target.duration);
-        currentTime =  convertElapsedTime(event.target.currentTime);
-        
-        console.log("duration ", duration)
-        console.log('currentTime ', currentTime)
-    } */
- 
 
     let isPlay = true;
-    let method = '';
     play.onclick = function (event) {
-        if (isPlay) {
-            play.src = 'images/play.png'
-            method = 'pause'
-            play.style.backgroundColor =  'rgb(245, 200, 235)'
-        } else {
-            play.src = 'images/pause.png'
-            play.style.backgroundColor =  '#fff'
-            method = 'play'
-        }
+        isPlay ? set_fun('images/play.png', 'pause', 'rgb(245, 200, 235)') : set_fun('images/pause.png', 'play', '#fff')
         isPlay = !isPlay;
-        audio[method]() // standard 
+
+        function set_fun(src, method, bgColor){
+            play.src = src;
+            play.style.backgroundColor = bgColor;
+            audio[method]() // call method
+        }
     }
 
-   
-
     previous.onclick = function (event) {
-        if(isRepeat){
+        if (isRepeat) {
             repeat_fun();
-        }else if(isShuffle){
+        } else if (isShuffle) {
             shuffle_fun();
-        }else{
+        } else {
             if (currentSongNo == 0) {
                 currentSongNo = totalSongs - 1;
             } else {
                 currentSongNo--;
             }
-            // console.log(currentSongNo);
-            addMusicSrc(currentSongNo);
-            // audio.src = audioFiles[currentSongNo];
-            // songName.textContent = songsName[currentSongNo]
-       }
+            addAudioSrc(currentSongNo);
+        }
     }
 
-    function addMusicSrc(currentSongNo){
+    function addAudioSrc(currentSongNo) {
         audio.src = audioFiles[currentSongNo];
         songName.textContent = songsName[currentSongNo]
     }
 
     next.onclick = function (event) {
-        if(isRepeat){
+        if (isRepeat) {
             repeat_fun();
-        }else if(isShuffle){
+        } else if (isShuffle) {
             shuffle_fun();
-        }else{
+        } else {
             if (currentSongNo == totalSongs - 1) {
                 currentSongNo = 0;
             } else {
                 currentSongNo++;
             }
-            // console.log(currentSongNo);
-            addMusicSrc(currentSongNo);
+            addAudioSrc(currentSongNo);
         }
     }
 
-    audio.onpause = function(event){
-        console.log('onpause event')
-        if(isBackwardBtnPressed){
+    audio.onpause = function (event) {
+        if (isBackwardBtnPressed) {
             event.target.currentTime -= 5;
             isBackwardBtnPressed = false;
-            audio.play();          
+            audio.play();
         }
-        if(isForwardBtnPressed){
+        if (isForwardBtnPressed) {
             isForwardBtnPressed = false;
             event.target.currentTime += 5;
-
-            audio.play();          
+            audio.play();
         }
     }
 
     let isBackwardBtnPressed = false;
-    backward.addEventListener('click', (event)=>{
-        isBackwardBtnPressed = true; //!isBackBtnPressed;
+    backward.addEventListener('click', (event) => {
+        isBackwardBtnPressed = true;  
         audio.pause();
     })
     let isForwardBtnPressed = false;
-    forward.addEventListener('click', (event)=>{
+    forward.addEventListener('click', (event) => {
         isForwardBtnPressed = true;
         audio.pause();
-        // isForwardBtnPressed = !isForwardBtnPressed;
-
     })
+
     let isShuffle = false;
     shuffle.addEventListener('click', (event) => {
         shuffle.style.backgroundColor = !isShuffle ? 'rgb(245, 200, 235)' : '#fff';
         isShuffle = !isShuffle;
         shuffle_fun();
-        
     })
 
-    function shuffle_fun(){
+    function shuffle_fun() {
         rand = Math.round(Math.random() * (totalSongs - 1));
-        console.log(rand);
         currentSongNo = rand;
-        
-        addMusicSrc(currentSongNo);
-        // audio.src = audioFiles[currentSongNo];
-        // songName.textContent = songsName[currentSongNo]
+
+        addAudioSrc(currentSongNo);
     }
 
     let isRepeat = false;
     repeat.addEventListener('click', (event) => {
-// 'rgb(245, 200, 235)'  'rgb(1, 200, 235)'
+        // 'rgb(245, 200, 235)'  'rgb(1, 200, 235)'
         repeat.style.backgroundColor = !isRepeat ? 'rgb(245, 200, 235)' : '#fff';
         isRepeat = !isRepeat;
         repeat_fun();
     })
 
-    function repeat_fun(){
-        currentSongNo = currentSongNo;
-        console.log(currentSongNo);
-        // currentSongNo = currentSongNo;
-       
-        addMusicSrc(currentSongNo);
-        // audio.src = audioFiles[currentSongNo];
-        // songName.textContent = songsName[currentSongNo]
+    function repeat_fun() {
+        addAudioSrc(currentSongNo);
     }
 
-    function songsList(){
+    function songsList() {
         songList.innerHTML = '' // 
-        songsName.forEach((songName, index) =>{
+        songsName.forEach((songName, index) => {
             song = document.createElement('div');
             song.className = 'song';
             song.id = index;
             song.innerHTML = `${index + 1}.   ${songName}`;
-            
-            song.addEventListener('click',(event) =>{
-                console.log('song  clicked', event.target.id)
+
+            song.addEventListener('click', (event) => {
                 currentSongNo = event.target.id;
-                
-                addMusicSrc(currentSongNo);
-                // audio.src = audioFiles[currentSongNo];
-                // songName.textContent = songsName[currentSongNo]
+                addAudioSrc(currentSongNo);
                 event.stopPropagation();
             })
             songList.appendChild(song);
@@ -235,17 +170,15 @@ window.onload = () => {
     }
     // When double clicked on songListPage then show first page
     let count = 0;
-    songListPage.addEventListener('click', (event)=>{
-         count += 1;
-         setTimeout(()=>{
+    songListPage.addEventListener('click', (event) => {
+        count += 1;
+        setTimeout(() => {
             count = 0;
-         }, 2000)
-         if(count == 2){
-             firstPage.style.display = 'flex'
-             songListPage.style.display = 'none'
-         }
-        //  console.log('target', event.target)
-        //  console.log('currentTarget', event.currentTarget)
+        }, 2000)
+        if (count == 2) {
+            firstPage.style.display = 'flex'
+            songListPage.style.display = 'none'
+        }
     }, false)
 
     playListBtn.onclick = (event) => {
@@ -254,79 +187,57 @@ window.onload = () => {
         songListPage.style.display = 'flex'
     }
 
-
     //when music end then next music is auto play
     audio.addEventListener('ended', (event) => {
-        console.log('Ended ', event.target)
-        currentSongNo ++;
-        if(currentSongNo === totalSongs){
-            currentSongNo = 0;
+        if (isRepeat) {
+            repeat_fun();
+        } else if (isShuffle) {
+            shuffle_fun();
+        } else {
+            if (currentSongNo == totalSongs - 1) {
+                currentSongNo = 0;
+            } else {
+                currentSongNo++;
+            }
+            addAudioSrc(currentSongNo);
         }
-        
-        addMusicSrc(currentSongNo);
-        // audio.src = audioFiles[currentSongNo];
-        // songName.textContent = songsName[currentSongNo]
-        console.log('currentSongNo', currentSongNo)
-
     })
 
     let duration,
-    currentTime ;
+        currentTime;
     audio.ontimeupdate = function (event) {
-        // console.log('currentSongNo', currentSongNo, totalSongs)
-        // console.log('duration ', event)
-        // console.log('duration ', event.target.duration)
-        // console.log('currentTime ', event.target.currentTime)
-        duration =  convertElapsedTime(event.target.duration);
-        currentTime =  convertElapsedTime(event.target.currentTime);
-        
-        duration_label.textContent = duration;
-        currentTime_label.textContent = currentTime;
+        duration = event.target.duration;
+        currentTime = event.target.currentTime;
 
-        // console.clear()
-        // console.log("duration ", duration)
-        // console.log('currentTime ', currentTime)
+        duration_label.textContent = convertElapsedTime(duration);
+        currentTime_label.textContent = convertElapsedTime(currentTime);
 
         // progress bar
-        increment = 10/event.target.duration;
-        percent = Math.min(increment * audio.currentTime * 10, 100);
-        progress.style.width = percent+'%'
-
+        increment = 10 / duration;
+        percent = Math.min(increment * currentTime * 10, 100);
+        progress.style.width = percent + '%'
     }
 
-    function convertElapsedTime(inputSeconds){
+    function convertElapsedTime(inputSeconds) {
         let seconds = Math.floor(inputSeconds % 60);
-        if(seconds < 10)
-         seconds = '0' + seconds;
+        if (seconds < 10)
+            seconds = '0' + seconds;
 
         let minutes = Math.floor(inputSeconds / 60)
-        return  minutes + ":"+seconds;
+        return minutes + ":" + seconds;
     }
-
 
     // left menu
     leftMenuBtn = document.querySelector('.icon');
     leftPanel = document.querySelector('.left-panel');
-    icon =leftMenuBtn.firstElementChild;
-    console.log(icon)
+    icon = leftMenuBtn.firstElementChild;
 
     let isOpen = false;
-    leftMenuBtn.addEventListener('click', (event)=>{
+    leftMenuBtn.addEventListener('click', (event) => {
         isOpen = !isOpen;
         isOpen ? set_fun(80, 81, 'images/back.png') : set_fun(0, 0, 'images/open.png');
 
-        /* if(isOpen){
-            icon.src = 'images/back.png';
-            leftPanel.style.width = '80%'
-            leftMenuBtn.style.left = '80%'
-
-        }else{
-            icon.src = 'images/open.png';
-            leftPanel.style.width = '0'
-            leftMenuBtn.style.left = '0'
-        } */
-
-        function set_fun(width, left, src){
+        function set_fun(width, left, src) {
             leftPanel.style.width = width + '%'
             leftMenuBtn.style.left = left + '%'
             icon.src = src;
@@ -334,33 +245,10 @@ window.onload = () => {
     })
 
     //When left panel is open then we click on main page then left panel is closed
-    firstPage.addEventListener('click', (event)=>{
+    firstPage.addEventListener('click', (event) => {
         /* icon.src = 'images/open.png';
         leftPanel.style.width = '0'
         leftMenuBtn.style.left = '0' */
     })
 
 }  // window.onload() method
-
-/* 
-   document.getElementById("progress");
-  increment = 10/duration
-  percent = Math.min(increment * element.currentTime * 10, 100);
-  progress.style.width = percent+'%'
-
-*/
-
-/* const load = () => {
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    let doc = document.querySelector('.container');
-    Object.assign(doc.style, {
-        'width': (width - 12) + 'px',
-        'height': (height) + 'px',
-        'marginLeft': '6px',
-        'justify-content': 'center',
-    })
-}
-
-window.addEventListener('load', load);
-window.addEventListener('resize', load); */
