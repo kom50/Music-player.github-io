@@ -357,6 +357,7 @@ input {
 }
 
 #timer-label {
+    justify-content: space-evenly;
 }
 
 .clock small {
