@@ -13,9 +13,17 @@
 
 <body>
     <div id="menu">
-        <div class='icon'> <img src="images/open.png" alt="open" ></div>
+        <div class='icon'> <img src="images/open.png" alt="open"></div>
         <div class='left-panel'>
-            <div class='timer'> Timer </div>   
+            <div class='h-1'> Sleep Mode </div>
+            <div class='clock'>
+                <p id='min'><span> MIN</span> <span> SEC </span></p>
+                <p id='timer-label'><span>05</span> <span>:</span> <span>00 </span></p>
+                <!-- <p id='timer-label'>05 : 00</p> -->
+                <small>When the countdown ends, music will stop</small>
+            </div>
+            <input class='timer-range' type='range' min='0' max='60' value='5' />
+            <input id='onOffBtn' type="button" value="On">
         </div>
     </div>
     <div class='container'>
@@ -26,11 +34,11 @@
             </div>
             <div class='items circle'>
                 <div class='round-circle'>
-                    <img id='play-list' src='images/playlist.png' >
+                    <img id='play-list' src='images/playlist.png'>
                 </div>
             </div>
             <div class='items song-label'>
-                <marquee id='song-name' scrollAmount = 4   direction='left'>
+                <marquee id='song-name' scrollAmount=4 direction='left'>
                 </marquee>
             </div>
             <div class='items audio-container'>

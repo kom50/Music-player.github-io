@@ -214,13 +214,14 @@ window.onload = () => {
     let duration,
         currentTime;
     audio.ontimeupdate = function (event) {
+
         duration = event.target.duration;
         currentTime = event.target.currentTime;
 
         duration_label.textContent = convertElapsedTime(duration);
         currentTime_label.textContent = convertElapsedTime(currentTime);
 
-        // progress bar
+        // progress bar increment 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 
         increment = 10 / duration;
         percent = Math.min(increment * currentTime * 10, 100);
         progress.style.width = percent + '%'
@@ -251,6 +252,48 @@ window.onload = () => {
             icon.src = src;
         }
     })
+
+    // Timer countdown version 2.0  date : 27-08-2021
+    let timer_label = document.querySelector('#timer-label')
+    let onOffBtn = document.querySelector('#onOffBtn');
+    let isOn = false;
+    let minutes = 5, timer, seconds = 0;
+
+    document.querySelector('.timer-range').addEventListener('change', (event)=>{
+        timer_label.firstElementChild.textContent = (event.target.value < 10 ? '0'+event.target.value : event.target.value );
+        timer_label.lastElementChild.textContent = '00';
+        minutes = event.target.value;
+    })
+
+
+    onOffBtn.addEventListener('click', (event)=>{
+        onOffBtn.value = isOn ? 'On' :'Off'
+
+        isOn = !isOn;
+        if(isOn){
+            countDown(minutes)
+        }else{
+            clearInterval(timer);
+        }
+    })
+    
+    function countDown(){
+        timer = setInterval(()=>{
+                if(seconds == 0 && minutes == 0){ 
+                    clearInterval(timer);
+                    audio.pause();
+                }else{
+                    
+                    if(seconds == 0){
+                        minutes--;
+                        seconds = 60;
+                    }
+                    seconds--;
+                    timer_label.firstElementChild.textContent = minutes < 10 ? '0' + minutes : minutes;
+                    timer_label.lastElementChild.textContent = seconds;
+            }
+       }, 1000)
+    }
 
     //When left panel is open then we click on main page then left panel is closed
     firstPage.addEventListener('click', (event) => {
